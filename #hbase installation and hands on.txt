@@ -1,0 +1,37 @@
+#hbase installation and hands on
+
+wget https://downloads.apache.org/hbase/stable/hbase-2.5.5-bin.tar.gz
+#wgetcommand and copy link or create link from where your downloading 
+i used hbase refrence guide to see which habse version mirror-stable-anyversion tar.gz
+
+#unzip
+tar xzf hbase-2.5.5-bin.tar.gz
+
+#change directory to hbase
+cd hbase-2.5.5
+
+#start habse
+bin/start-hbase.sh
+if error occured -java home not set then follow below:
+
+Find the Java Installation Path:
+To determine the Java installation path, you can use the update-alternatives command:
+sudo update-alternatives --config java
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+
+export JAVA_HOME=/path/to/your/java ###replace by your java installation path
+export PATH=$PATH:$JAVA_HOME/bin
+----------------------------------------------------------
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+export PATH=$PATH:$JAVA_HOME/bin
+
+nano ~/.bashrc
+opens a shell configuration file
+at the end copy above two export line at the end dont remove already any previous copied lines like for hadoop copy this to below those line
+ctrl x ,y,enter 
+
+
+To verify that JAVA_HOME has been set correctly, run:
+echo $JAVA_HOME
+You should see the path to your Java installation.
+output=/usr/lib/jvm/java-11-openjdk-amd64/bin/java

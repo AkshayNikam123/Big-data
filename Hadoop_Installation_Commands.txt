@@ -1,0 +1,341 @@
+Prerequisite Test
+=============================
+sudo apt update
+sudo apt install openjdk-8-jdk -y
+
+java -version; javac -version
+sudo apt install openssh-server openssh-client -y
+sudo adduser hdoop
+su - hdoop
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+ssh localhost
+(if error occur again install ssh by these command and check in rockybhai not in new user i.e hdoop)
+su - rockybhai
+sudo adduser hdoop sudo #adding hdoop to superuser
+--
+or
+--
+sudo apt-get install openssh-server  # For Ubuntu/Debian
+sudo yum install openssh-server      # For CentOS/RHE
+sudo service ssh start  # For systemd-based system
+sudo netstat -tuln | grep 22 or sudo ss -tuln | grep 22
+sudo service ssh status
+sudo service ssh start
+after making any changes to the configuration or service status, it's a good practice to restart the SSH server:
+sudo service ssh restart)
+again enter to new user hdoop by su - hdoop
+if key not created create key if already created then ssh localhost 
+
+
+
+Downloading Hadoop (Please note link is updated to new version of hadoop here on 6th May 2022)
+===============================
+wget https://downloads.apache.org/hadoop/common/hadoop-3.2.3/hadoop-3.2.3.tar.gz
+tar xzf hadoop-3.2.3.tar.gz #unzip downloaded zip file using tar xzf 
+ls -lrt to check zip and downloaded file
+
+Editng 6 important files downloaded in folder
+=================================
+1st file
+===========================
+sudo nano .bashrc -  here you might face issue saying hdoop is not sudo user 
+if this issue comes then
+su - aman
+sudo adduser hdoop sudo
+
+sudo nano .bashrc
+go to end of what you see on scree
+#add or replace below lines in this file
+
+#Hadoop Related Options
+export HADOOP_HOME=/home/hdoop/hadoop-3.2.3
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS"-Djava.library.path=$HADOOP_HOME/lib/nativ"
+
+check changes 
+cat .bashrc
+
+#to reload changes
+source ~/.bashrc
+#output like not identifier its ok
+
+2nd File
+============================
+sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+#Add below line in this file in the end
+#passing java installed path to hadoop environment
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+#ctrl X
+#y
+#enter
+
+3rd File
+===============================
+sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+
+#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+   <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/home/hdoop/tmpdata</value>
+        <description>A base for other temporary directories.</description>
+    </property>
+    <property>
+        <name>fs.default.name</name>
+        <value>hdfs://localhost:9000</value>
+        <description>The name of the default file system></description>
+    </property>
+
+4th File
+====================================
+sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+
+#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+
+
+<property>
+  <name>dfs.data.dir</name>
+  <value>/home/hdoop/dfsdata/namenode</value>
+</property>
+<property>
+  <name>dfs.data.dir</name>
+  <value>/home/hdoop/dfsdata/datanode</value>
+</property>
+<property>
+  <name>dfs.replication</name>
+  <value>1</value>              #1 replica as we are using one machine only
+</property>
+
+
+
+5th File
+================================================
+#mapreduce
+sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
+
+#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+
+<property>
+  <name>mapreduce.framework.name</name>
+  <value>yarn</value>
+</property>
+
+6th File
+==================================================
+sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+
+<property>
+  <name>yarn.nodemanager.aux-services</name>
+  <value>mapreduce_shuffle</value>
+</property>
+<property>
+  <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+  <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.hostname</name>
+  <value>127.0.0.1</value>
+</property>
+<property>
+  <name>yarn.acl.enable</name>
+  <value>0</value>
+</property>
+<property>
+  <name>yarn.nodemanager.env-whitelist</name>
+  <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PERPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
+</property>
+
+
+Launching Hadoop
+==================================
+hdfs namenode -format
+#shows shutting down message that means everything is fine if not check error and do changes as you done for 1,2,3,4,5 files removing previous content and copying content given for that file
+
+~/hadoop-3.2.3/sbin/ #dir
+
+cd ~/hadoop-3.2.3/sbin/  #change to this dir #~ symbol for home
+
+ls -lrt #check all sh files for namenode yarn datanode
+
+#dont come out of ~/hadoop-3.2.3/sbin/
+
+./start-dfs.sh   #start distributed file system
+
+#how to start yarn
+./start-yarn.sh
+
+ #check hadoop installed or not this command
+jps  #stands java processes in your system
+
+
+
+@@@@@@@@@
+#Basic commands of hadoop
+#check files in hdfs
+hdfs dfs -ls /    #/ for files present root directory
+#output
+# Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+
+#change permission of file
+hdfs dfs -chmod 777 /akshay.txt 
+
+#new file in xyz directory
+hdfs dfs -touch /xyz/akshaynewfile.txt 
+
+#check files inside xyz
+hdfs dfs -ls /xyz
+
+hdfs dfs -cat xyz/akshay.txt
+
+#hdfs to local
+#copy file from /xyz/akshaynewfile.txt to (/home/hdoop/downloads)local folder
+
+hdfs dfs -get /xyz/akshaynewfile.txt /home/hdoop/downloads
+#local to hdfs
+hdfs dfs -put akshaynewfile.txt xyz/
+
+#disk space utilised untilised check
+hdfs dfsadmin -report
+
+#copy file to new dir
+hdfs dfs -cp /akshaynew.txt /xyz/
+check hdfs dfs -ls /xyz
+
+#remove dir 
+hdfs dfs -rm -r /xyz
+
+#check hadoop version
+hadoop version
+
+#disk used by dir
+hdfs dfs -du /xyz 
+#fives disk space used by files inside xyz
+
+#healthcheckup of hadoop cluster 
+hdfs fsck /
+
+@@@@@@@@@@@@
+#from local to hdfs #hdfs commands works only when ur in hadoop installed folder i.e hdoop(new user) not rockybhai
+hdfs dfs -put /home/rockybhai/Hadoop_Installation_Commands.txt /
+#copying file from one user rockybhai where file is located to hdoop other user where hadoop installed is possible or not?
+hdoop dont have access to rockybhai 
+both file and hadoop should run under same user i.e hdoop we cant move file rockybhai to hdoop hdfs not possible as hdoop user dont have acces to rockybhai other user and offcourse hdfs commands can run only on hdoop where hadoop installed.
+@@@@@@@@@@@@
+
+
+
+#enter hdoop user
+hdfs dfs -mkdir testakshay/  #directory created on hdfs 
+vi demo.txt write anything inside #file creating inside hdoop user that is local ubuntu system 
+
+hdfs dfs -put demo.txt testakshay/
+#demo.txt and actual hadoop installed under same user hdoop
+#so can move demo.txt from local ubuntu sys to hadoop dir(hdfs) i.e testakshay
+#if  multinode cluster in hadoop i.e 100 computer in hadoop cluster it will store in any computer as here we are the only so file store in our pc only
+
+#some commands
+hdfs dfs -ls testakshay/ #check files inside hdfs dir we have created
+hdfs dfs -cat testakshay/demo.txt  #content inside file
+
+hdfs dfs -mv testakshay/demo.txt testakshay/demo1.txt #to change name 
+
+hdfs dfs -rm -r testakshay  #to remove whole dir
+
+
+
+EXAMPLE TO FOR HANDS ON MAPREDUCE
+vi word_count_data.txt
+#type any content you want #the quick brwon fox jumped over lazy dogs jumped jumped
+ 
+hdfs dfs -mkdir wordcountdatanew
+
+hdfs dfs -put word_count_data.txt wordcountdatanew/  #file move hadoop dir
+
+hdfs dfs -ls /user/hdoop/wordcountdatanew #to check file dir
+
+
+#mapper function
+#!/usr/bin/env python3  #shebang line which define python interpreter here change to python3 from python.in python3, print statement needs bracket
+
+# import sys because we need to read and write data to STDIN and STDOUT
+import sys
+
+# reading entire line from STDIN (standard input)
+for line in sys.stdin:
+        # to remove leading and trailing whitespace
+        line = line.strip()
+        # split the line into words
+        words = line.split()
+
+        # we are looping over the words array and printing the word
+        # with the count of 1 to the STDOUT
+        for word in words:
+                # write the results to STDOUT (standard output);
+                # what we output here will be the input for the
+                # Reduce step, i.e. the input for reducer.py
+                print ('%s\t%s' % (word, 1))
+vi /home/hdoop/mapper.py #paste above mapper function into that . file stored in local ubuntu home/hdoop same with reducer
+
+#!/usr/bin/env python3  #shebang line which define python interpreter here change to python3 from python.in python3, print statement needs bracket.sometimes  need to install dep on hadoop
+
+from operator import itemgetter
+import sys
+
+current_word = None
+current_count = 0
+word = None
+
+# Read the entire line from STDIN
+for line in sys.stdin:
+    # Remove leading and trailing whitespace
+    line = line.strip()
+    # Split the data on the basis of the tab character
+    word, count = line.split('\t', 1)
+    # Convert count (currently a string) to int
+    try:
+        count = int(count)
+    except ValueError:
+        # Count was not a number, so silently
+        # ignore/discard this line
+        continue
+
+    # This IF-switch only works because Hadoop sorts map output
+    # by key (here: word) before it is passed to the reducer
+    if current_word == word:
+        current_count += count
+    else:
+        if current_word:
+            # Write result to STDOUT
+            print('%s\t%s' % (current_word, current_count))
+        current_count = count
+        current_word = word
+
+# Do not forget to output the last word if needed!
+if current_word == word:
+    print('%s\t%s' % (current_word, current_count))
+
+vi reducer.py #copy above reducer function her
+
+
+
+
+
+
+
+
+
+
+
+
+

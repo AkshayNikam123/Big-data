@@ -1,0 +1,42 @@
+#databases
+NoSQL databases, also known as "Not Only SQL" databases, are a category of database management systems that provide an alternative to traditional relational databases. They are designed to handle large volumes of data, complex data models, and diverse data types more efficiently than relational databases. NoSQL databases are commonly used for modern applications that require high scalability, flexibility, and speed. There are several types of NoSQL databases, each with its own unique characteristics and use cases. Here are some of the main types of NoSQL databases:
+
+Document Databases:
+Examples: MongoDB, Couchbase, RavenDB
+Data Model: Store data in flexible, semi-structured document formats (e.g., JSON, BSON). Documents are organized into collections.
+Use Cases: Content management systems, catalogs, real-time analytics.
+
+Key-Value Stores:
+Examples: Redis, Amazon DynamoDB, Riak
+Data Model: Simple key-value pairs. Efficient for caching and high-speed data retrieval.
+Use Cases: Caching, session management, real-time analytics.
+
+Column-Family Stores:
+Examples: Apache Cassandra, HBase, Amazon DynamoDB (with a wide-column design)
+Data Model: Data organized in column families (column families are containers for related data). Good for high write throughput and scalability.
+Use Cases: Time-series data, event logging, IoT applications.
+
+Graph Databases:
+Examples: Neo4j, Amazon Neptune, OrientDB
+Data Model: Store data in graph structures composed of nodes and edges, making them ideal for complex relationships.
+Use Cases: Social networks, recommendation engines, fraud detection.
+
+Time-Series Databases:
+Examples: InfluxDB, OpenTSDB, Prometheus
+Data Model: Specialized for time-series data, making it efficient for storing and querying time-stamped data points.
+Use Cases: Monitoring, sensor data, IoT, financial data.
+
+Search Engines:
+Examples: Elasticsearch, Apache Solr
+Data Model: Designed for full-text search and real-time indexing, supporting structured and unstructured data.
+Use Cases: Text search, log analysis, content discovery.
+
+Object Stores:
+Examples: MinIO, Ceph
+Data Model: Store and manage unstructured data as objects, often used for scalable and distributed storage.
+Use Cases: Storing large files and binary data, content delivery.
+
+NewSQL Databases (Emerging):
+Examples: Google Spanner, CockroachDB, NuoDB
+Data Model: Combines the best of SQL and NoSQL, offering distributed, highly available, and horizontally scalable databases with strong consistency.
+Use Cases: Web-scale applications, globally distributed systems.

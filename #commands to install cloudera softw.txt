@@ -1,0 +1,16 @@
+#commands to install cloudera software on ubuntu 20.04(only support)
+
+1) wget https://archive.cloudera.com/cm7/7.4.4/cloudera-manager-installer.bin
+
+2) chmod u+x cloudera-manager-installer.bin
+ 
+3) sudo ./cloudera-manager-installer.bin
+
+before install update apt(Advanced Package Tool, a package management system)
+sudo apt update 
+
+
+if instalation failed 
+sudo rm /etc/cloudera-scm-server/db.properties #to remove old data base for installer
+
+#installation failed lot of times

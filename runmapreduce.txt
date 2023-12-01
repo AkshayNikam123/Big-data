@@ -1,0 +1,23 @@
+
+#1st line for python file running(mapper.py and ruuner.py)and location of jar streaming of mapreduce  converts python to java
+hadoop jar /home/hdoop/hadoop-3.2.3/share/hadoop/tools/lib/hadoop-streaming-3.2.3.jar \   
+-input /user/hdoop/wordcountdatanew/word_count_data.txt \   #input file word_count_data.txt move to directory created on hdfs also change chmod 777 on hdfs for word_count_data.txt if needed
+-output /user/hdoop/wcoutputnewtoday8 \      #output collecting wcoutputnewtoday10 dir which is on hdfs no need to separately create this.here you can create if error,new name every time            
+-mapper /home/hdoop/mapper.py \     #mapper created on local ubuntu and their location
+-reducer /home/hdoop/reducer.py \   #reducer created on local ubuntu and their location 
+-file /home/hdoop/mapper.py \
+-file /home/hdoop/reducer.py
+
+hadoop jar /home/hdoop/hadoop-3.2.3/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.2.3.jar  #this line changes if java file running
+-input /user/hdoop/wordcountdatanew/word_count_data.txt \
+-output /user/hdoop/wcoutputnewtoday8 \
+-mapper /home/hdoop/mapper.py \
+-reducer /home/hdoop/reducer.py \
+-file /home/hdoop/mapper.py \
+-file /home/hdoop/reducer.py
+
+
+#check output 
+go to output dir where ouput stored
+hdfs dfs -ls /user/hdoop/wcoutputnewtoday10   #list all output files
+hdfs dfs -cat /user/hdoop/wcoutputnewtoday10/part-00000  #file inside directory of output where actual output is stored 

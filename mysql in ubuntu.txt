@@ -1,0 +1,43 @@
+mysql in ubuntu user folder i.e hdoop
+sudo apt install mysql-server
+
+when you login first time
+sudo mysql -u root -p
+
+start using mysql
+
+CREATE DATABASE mydatabase;  #capital/small ok
+SHOW DATABASES;
+USE mydatabase;   #necessary command to select databse  # use hive as database; if hive installed 
+SELECT DATABASE();  #verify selected database 
+
+
+create table company(id int,name varchar(20),location varchar(20));
+
+ insert into company values(1, 'ineuron','Bangalore');
+
+insert into company values(2, 'eduvista','Walnut');
+
+insert into company values(3, 'eduvista','Bangalore');
+
+ select * from company;
+
+exit;  #exit from mysql
+
+
+
+#connect sqoop to mysql
+sqoop import --connect jdbc:mysql://hostname:port/database_name --username your_username --password your_password --table your_table --target-dir /your/hdfs/directory
+
+sqoop import --connect jdbc:mysql://DESKTOP-5TOUQQI:3306/mydatabase --username root --password your_password  --table company --target-dir home/hdoop/hadoop-3.2.3/sqlimport --m 1
+
+
+u need to know hostname  type hostname in linux you will get it
+local host for mysql #enter mysql type show variable like 'port'; 
+
+####importing data from mysql to hdfs 
+## tried but not working error is occuring
+Caused by: java.lang.ClassNotFoundException: org.apache.commons.lang.StringUtils
+        at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581)
+        at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:527)

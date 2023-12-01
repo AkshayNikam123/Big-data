@@ -1,0 +1,13 @@
+#in cmd 
+wsl --list --verbose  #to check installed list of wsl linux
+
+#switch to any version 
+wsl -d Ubuntu-20.04    
+
+#as cdp software support 20.04 so need to install cdp on 20.04 version only
+
+#to check present working wsl 
+ lsb_release -a
+
+or@@@@@@@@@@@@@@@@@@@@@
+#directly open wsl propmt and their in dropdownmenu you get diffrent linux kernel you can switch from their

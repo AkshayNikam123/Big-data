@@ -1,0 +1,37 @@
+#sqoop commands
+➢codegen Generate code to interact with database records.
+➢create-hive-table import a table definition into Hive.
+➢eval  Evaluate a SQL statement and display the results.
+➢export Exporta HDFS directory to a database table.
+➢help  List the available commands.
+➢import  Importa table from a database to HDFS.
+➢import-all-tables  Import tables from a database to HDFS.
+➢list-databases  List available databases on a server.
+➢list-table  List available tables in a database.
+➢version   Display version information.
+
+features of import and export
+SQOOP Import–
+➢Divide table into ranges using primary key max/min.
+➢Create mappers for each range.
+➢Mappers write to multiple HDFS nodes.
+➢Creates text or sequence files.
+➢Generates Java class for resulting HDFS file
+➢Generates Hive definition and auto loads into Hive.
+commands
+--connect jdbc:mysql://localhost/testdb    [Connection String]
+--username USER_NAME                        [DB Username]
+--password PASSWORD                           [DB Password]
+--table TABLE_NAME                       [Table to be imported}
+
+
+
+SQOOP Export–
+➢Read files in HDFS directory via MapReduce.
+➢Bulk parallel insert into database table.
+sQOOP export 
+--connect jdbc:mysql://localhost/testdb      [Connection String]
+--username USER_NAME                      [DB Username]
+--password PASSWORD                    [DB Password]
+--table TABLE_NAME                       [Table to be imported]
+--export-dirDIR_NAME                     [Output directory]

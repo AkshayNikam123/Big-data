@@ -1,0 +1,56 @@
+#sqoop-mysql installation
+cd /home/hdoop/hadoop-3.2.3/sbin #change dir to hadoop sbin
+ls -lrt
+#you will see list of commands run 
+. start-all.sh #to start all daemons of hadoop  #because hadoop should run in background these are all on top of hadoop
+
+jps #to check daemons are running or not ###daemons are backgournd process that handles various services of hadoop without user intervention
+
+
+
+#download sqoop
+ wget https://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+#website link passed just sqoop version on google and see whole addres to download 
+
+#unzip downloaded file
+tar -xvf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz  #sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz  can check this filename using ls -lrt 
+
+GO to .bashrc and set env variables
+===================================
+nano ~/.bashrc
+export SQOOP_HOME=/home/hdoop/sqoop-1.4.7.bin__hadoop-2.6.0      #path sqoop unzip folder given
+export PATH=$PATH:$SQOOP_HOME/bin
+
+source ~/.bashrc  #changes above reflected in system
+
+Go to sqoop conf and set hadoop path
+======================================
+$ cd $SQOOP_HOME/conf\
+$ ls -lrt---->sqoop-env-template.sh
+$ mv sqoop-env-template.sh sqoop-env.sh   #name change here
+$ nano sqoop-env.sh  #pass hadoop path in sqoop
+
+at the bottom copy hadoop path 
+export HADOOP_COMMON_HOME=/home/hdoop/hadoop-3.2.3
+export HADOOP_MAPRED_HOME=/home/hdoop/hadoop-3.2.3
+
+Configure mysql connector #not installing mysql just a connector for sqoop
+===================
+
+$ wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz
+
+$ tar -xvf mysql-connector-java-8.0.27.tar.gz
+$ mv mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar /$SQOOP_HOME/lib
+
+Download and put sqoop jar in sqoop home
+========================================
+cd ..  come out of cong dir and go to bin
+cd bin/
+
+Verify the installation
+=============
+$ sqoop version
+in output it will job fail invalid variable ignore just sqoop commands workign or nt
+
+$ run basic command 
+sqoop help
